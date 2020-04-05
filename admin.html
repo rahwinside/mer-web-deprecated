@@ -38,20 +38,50 @@
 			<h2 class="card-title">mer<sup><sup style="font-size: 0.8rem;">(community)</sup></sup></h2>
 			<h5 class="card-title">Level 2: Sign in</h5>
 			<p class="card-text"><div class="input-group input-group-sm mb-3">
-				  <input type="text" class="form-control" placeholder="username" aria-label="username" aria-describedby="basic-addon2">
+				  <input type="text" class="form-control" placeholder="username" aria-label="username" name="email" aria-describedby="basic-addon2">
 				  <div class="input-group-append">
 					<span class="input-group-text" id="basic-addon2">@mercommunity.com</span>
 				  </div>
 				</div>
 				<div class="input-group input-group-sm mb-3">
-				  <input type="password" class="form-control" placeholder="password" aria-label="password" aria-describedby="basic-addon2">
+				  <input type="password" name="password" class="form-control" placeholder="password" aria-label="password" aria-describedby="basic-addon2">
 				</div>
 				</p>
 				<div class="text-right">
-				  <button type="button" class="btn btn-primary btn-sm">Continue</button>
+				  <button type="button" class="btn btn-primary btn-sm" onClick="handleSignUp()">Continue</button>
 				</div>
 			</div>
 	  </div>
 	</div>
+	<script>
+		function handleSignUp() {
+		  var email = document.getElementById('email').value;
+		  var password = document.getElementById('password').value;
+		  if (email.length < 4) {
+			alert('Please enter an email address.');
+			return;
+		  }
+		  if (password.length < 4) {
+			alert('Please enter a valid password.');
+			return;
+		  }
+		  // Create user with email and pass.
+		  // [START createwithemail]
+		  firebase.auth().createUserWithEmailAndPassword(email, password).catch(function(error) {
+			// Handle Errors here.
+			var errorCode = error.code;
+			var errorMessage = error.message;
+			// [START_EXCLUDE]
+			if (errorCode == 'auth/weak-password') {
+			  alert('The password is too weak.');
+			} else {
+			  alert(errorMessage);
+			}
+			console.log(error);
+			// [END_EXCLUDE]
+		  });
+      // [END createwithemail]
+    	}
+	</script>
 </body>
 </html>
